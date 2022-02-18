@@ -4,6 +4,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 //my components
 import Header from '../components/Header.jsx';
 import Sidebar from '../components/Sidebar.jsx';
+import Books from '../pages/books.jsx'
+
+//import Menu from '../components/Menu.jsx';
 import Home from '../pages/home/Home.jsx';
 import Balance from '../pages/balance/Balance.jsx';
 
@@ -21,6 +24,7 @@ export default function Router() {
                         <Route path="/" element={<Home />} />
                         <Route path="/home" element={<Home />} />
                         <Route path="/balance" element={<Balance />} />
+                        <Route path="/books" element={<Books />} />
                     </Routes>
                 </div>
 

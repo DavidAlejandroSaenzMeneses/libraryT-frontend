@@ -15,7 +15,7 @@ export default function Sidebar() {
                 <div className="option-list block w-full my-4">
                     <ul className="block w-full">
                         <li className="item1 item-menu group">
-                            <NavLink to="/home" activeclass="item-menu-active" className="flex">
+                            <NavLink to="/books" className="flex">
                                 <div className="item-menu-container">
                                     <BookOpenIcon className="item-menu-icon" />
                                 </div>
@@ -23,7 +23,7 @@ export default function Sidebar() {
                             </NavLink>
                         </li>
                         <li className="item3 item-menu group">
-                            <NavLink to="/balance" activeclass="item-menu-active" className="flex" activeClassName="item-menu-active bg-red-500">
+                            <NavLink to="/balance" className="flex">
                                 <div className="item-menu-container">
                                     <UsersIcon className="item-menu-icon" />
                                 </div>
@@ -31,7 +31,7 @@ export default function Sidebar() {
                             </NavLink>
                         </li>
                         <li className="item2 item-menu group">
-                            <NavLink to="/balance" activeclass="item-menu-active" className="flex" activeClassName="item-menu-active">
+                            <NavLink to="/balance" className="flex">
                                 <div className="item-menu-container rounded-br-lg">
                                     <ClipboardListIcon className="item-menu-icon" />
                                 </div>
