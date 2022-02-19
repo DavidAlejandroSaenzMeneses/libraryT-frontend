@@ -23,7 +23,7 @@ export default function Sidebar() {
                             </NavLink>
                         </li>
                         <li className="item3 item-menu group">
-                            <NavLink to="/balance" className="flex">
+                            <NavLink to="/users" className="flex">
                                 <div className="item-menu-container">
                                     <UsersIcon className="item-menu-icon" />
                                 </div>
@@ -31,7 +31,7 @@ export default function Sidebar() {
                             </NavLink>
                         </li>
                         <li className="item2 item-menu group">
-                            <NavLink to="/balance" className="flex">
+                            <NavLink to="/loans" className="flex">
                                 <div className="item-menu-container rounded-br-lg">
                                     <ClipboardListIcon className="item-menu-icon" />
                                 </div>

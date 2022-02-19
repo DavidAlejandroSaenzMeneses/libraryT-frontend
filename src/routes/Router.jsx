@@ -4,13 +4,13 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 //my components
 import Header from '../components/Header.jsx';
 import Sidebar from '../components/Sidebar.jsx';
-import Books from '../pages/books.jsx'
+import Books from '../pages/Books.jsx'
 
 //import Menu from '../components/Menu.jsx';
 import Home from '../pages/home/Home.jsx';
-import Balance from '../pages/balance/Balance.jsx';
-
-
+import Users from '../pages/User.jsx';
+import Loans from '../pages/Loans.jsx';
+import CreateLoan from '../pages/CreateLoan.jsx';
 
 export default function Router() {
     return (
@@ -23,8 +23,11 @@ export default function Router() {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/home" element={<Home />} />
-                        <Route path="/balance" element={<Balance />} />
+                        <Route path="/users" element={<Users />} />
                         <Route path="/books" element={<Books />} />
+                        <Route path="/loans" element={<Loans />} />
+                        <Route path="/loan/create/:idBook" element={<CreateLoan />} />
+                        <Route path="/loan/esit" element={<Loans />} />
                     </Routes>
                 </div>
 
