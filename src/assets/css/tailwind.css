@@ -4,7 +4,7 @@
 
 /*Clases Personalizadas*/
 .item-menu {
-    @apply flex p-3 items-center w-full hover:bg-gray-200 rounded-tl-xl hover:font-bold transition duration-500 hover:shadow-xl
+    @apply flex p-3 my-2 items-center w-full rounded-tl-xl transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-gray-200 hover:shadow-xl duration-300
 }
 
 .item-menu-container{
