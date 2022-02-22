@@ -11,6 +11,7 @@ import Home from '../pages/home/Home.jsx';
 import Users from '../pages/User.jsx';
 import Loans from '../pages/Loans.jsx';
 import CreateLoan from '../pages/CreateLoan.jsx';
+import EditBook from '../pages/EditBook.jsx';
 
 export default function Router() {
     return (
@@ -25,9 +26,9 @@ export default function Router() {
                         <Route path="/home" element={<Home />} />
                         <Route path="/users" element={<Users />} />
                         <Route path="/books" element={<Books />} />
+                        <Route path="/book/edit/:idBook" element={<EditBook />} />
                         <Route path="/loans" element={<Loans />} />
                         <Route path="/loan/create/:idBook" element={<CreateLoan />} />
-                        <Route path="/loan/esit" element={<Loans />} />
                     </Routes>
                 </div>
 

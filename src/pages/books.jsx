@@ -1,29 +1,65 @@
-import { BookOpenIcon, PencilAltIcon, HandIcon } from '@heroicons/react/outline';
-import { useHttp } from '../hooks/useHttp';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import defaultPicture from '../assets/image/default.png';
 import { Link } from 'react-router-dom';
+import { BookOpenIcon, PencilAltIcon, ChevronDoubleUpIcon, ChevronDoubleDownIcon } from '@heroicons/react/outline';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import defaultPicture from '../assets/image/default.png';
+
 export default function Books() {
-    const url = 'http://localhost:3900/api/v1';
-    //const [books, setBooks] = useHttp(url);
+    const MySwal = withReactContent(Swal);
+    const urlBase = 'http://localhost:3900/api/v1';
     const [books, setBooks] = useState({
         books: false,
         status: ''
     });
-    useEffect(() => {
-        const getData = () => {
-            axios.get('http://localhost:3900/api/v1/books').then(res => {
-                setBooks(res.data.result);
-            }).catch(error => {
-                setBooks({
-                    books: false,
-                    status: 'success'
-                });
+    const getBooks = ()=>{
+        axios.get(`${urlBase}/books`).then(res => {
+            setBooks(res.data.result);
+        }).catch(error => {
+            setBooks({
+                books: false,
+                status: 'success'
             });
-        }
-        getData();
+        });
+    }
+    useEffect(() => {
+        getBooks();
     }, []);
+
+    const closeLoan = (e) => {
+        e.preventDefault();
+        const bookForClose=e.target.value;
+        MySwal.fire({
+            title: 'Generar Devolucion?',
+            text: "Desea Registrar la devolucion del libro",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            confirmButtonColor: '#22c55e',
+            cancelButtonText: 'Cancelar',
+            cancelButtonColor: '#6b7280',
+            
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.put(`${urlBase}/loans/${bookForClose}/close`).then(res => {
+                    getBooks();
+                    MySwal.fire(
+                        'Proceso Realizado',
+                        'Se registro correctamente la devolucion',
+                        'success'
+                    )
+                }).catch(error => {
+                    MySwal.fire(
+                        'Error',
+                        'Algo salio mal',
+                        'error'
+                    )
+                });
+                
+            }
+        })
+    }
     return (
         <div className="py-4 px-6 h-full">
             <div className="title-Page flex items-center mb-4">
@@ -46,13 +82,13 @@ export default function Books() {
                 </div>
                 <div className="books-list w-full overflow-auto">
                     {(books && books.length > 0) ? (
-                        books.map((book,i) => {
+                        books.map((book, i) => {
                             return (
-                                <div className="book-list-item flex h-sm p-2 my-2 h-60 bg-gray-100" key={'itemBook'+i}>
+                                <div className="book-list-item flex h-sm p-2 my-2 h-60 bg-gray-100" key={'itemBook' + i}>
                                     <div className="book-image w-1/5">
                                         <div className="flex h-60 items-center">
                                             {book.image !== null ? (
-                                                <img src={url + '/books/get-image/' + book.image} alt={book.title} className="object-scale-down h-48 w-96" />
+                                                <img src={urlBase + '/books/get-image/' + book.image} alt={book.title} className="object-scale-down h-48 w-96" />
                                             ) : (
                                                 <img src={defaultPicture} alt="book" className="object-scale-down h-48 w-96" />
                                             )}
@@ -68,19 +104,30 @@ export default function Books() {
                                                 <div className="overflow-hidden h-32 text-ellipsis text-justify">{book.prologue}
                                                 </div>
                                             </div>
-                                            <div className="font-bold text-green-700 text-left">Disponible</div>
+                                            {book.loan_book ? (
+                                                <div className="font-bold text-red-700 text-left">Prestado</div>
+                                            ) : (
+                                                <div className="font-bold text-green-700 text-left">Disponible</div>
+                                            )
+                                            }
                                         </div>
                                     </div>
                                     <div className="w-1/5">
                                         <h3 className="text-lg text-gray-700 h-1/5">Acciones</h3>
                                         <div className="flex items-center justify-center h-4/5">
                                             <div>
-                                                <Link to={"/loan/create/" + book.id_book} className="flex items-center w-24 border-2 border-yellow-400 p-2 rounded-md my-1 bg-gray-100 hover:bg-yellow-500 hover:text-white transition duration-500">
+                                                <Link to={"/book/edit/" + book.id_book} className="flex items-center w-28 border-2 border-yellow-400 p-2 rounded-md my-1 bg-gray-100 hover:bg-yellow-500 hover:text-white transition duration-500">
                                                     <PencilAltIcon className="h-5 w-5" /> Editar
                                                 </Link>
-                                                <Link to={"/loan/create/" + book.id_book} className="flex items-center w-24 border-2 border-blue-400 p-2 rounded-md my-1 bg-gray-100 hover:bg-blue-500 hover:text-white transition duration-500">
-                                                    <HandIcon className="h-5 w-5" /> Prestar
-                                                </Link>
+                                                {book.loan_book ? (
+                                                    <button className="flex items-center w-28 border-2 border-purple-400 p-2 rounded-md my-1 bg-gray-100 hover:bg-purple-500 hover:text-white transition duration-500" onClick={closeLoan} value={book.id_book}>
+                                                        <ChevronDoubleDownIcon className="h5 w-5" />Devolucion
+                                                    </button>
+                                                ) : (
+                                                    <Link to={"/loan/create/" + book.id_book} className="flex items-center w-28 border-2 border-green-400 p-2 rounded-md my-1 bg-gray-100 hover:bg-green-500 hover:text-white transition duration-500">
+                                                        <ChevronDoubleUpIcon className="h5 w-5" />Prestamo
+                                                    </Link>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
@@ -95,6 +142,6 @@ export default function Books() {
                     }
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

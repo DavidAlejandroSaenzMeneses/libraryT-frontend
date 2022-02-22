@@ -17,9 +17,7 @@ export default function CreateLoan() {
 
 
     const documents = ['CC', 'CE', 'TI'];
-    const url = 'http://localhost:3900/api/v1';
     const urlBase = "http://localhost:3900/api/v1";
-    //const [books, setBook] = useHttp(url);
     const [book, setBook] = useState({ book: false, status: '' });
     const [userData, setUser] = useState({ status: 'pending', user: false, message: '' });
     useEffect(() => {

@@ -1,24 +1,23 @@
 import { useEffect, useState } from 'react';
-import {Link} from 'react-router-dom';
+import { SearchCircleIcon, UsersIcon } from '@heroicons/react/outline';
 import axios from 'axios';
-import { FolderAddIcon, SearchCircleIcon, UsersIcon } from '@heroicons/react/outline';
+import {DateTime} from 'luxon'; 
 
 
 export default function Balance() {
-    const url = 'http://localhost:3900/api/v1';
-    //const [users, setUsers] = useHttp(url);
-    const [users, setUsers] = useState({
-        users: false,
-        status: ''
+    const urlBase = 'http://localhost:3900/api/v1';
+    const [loans, setLoans] = useState({
+        status: '',
+        loans: false
     });
     useEffect(() => {
         const getData = () => {
-            axios.get('http://localhost:3900/api/v1/users').then(res => {
-                setUsers(res.data.result);
+            axios.get(`${urlBase}/loans`).then(res => {
+                setLoans(res.data.result);
             }).catch(error => {
-                setUsers({
-                    users: false,
-                    status: 'success'
+                setLoans({
+                    status: 'success',
+                    loans: false
                 });
             });
         }
@@ -38,51 +37,39 @@ export default function Balance() {
                         <SearchCircleIcon className="h-7 w-7 text-gray-700 transition-all transform -rotate-90 " />
                     </div>
                     <div className="flex w-1/3 w-red-200 justify-end">
-                        
+
                     </div>
                 </div>
                 <div className="w-full overflow-auto">
-                    <table className="table w-full p-4 border border-gray-300">
-                        <thead className="bg-yellow-200">
-                            <tr>
-                                <th>No</th>
-                                <th>Codigo de Tarjeta</th>
-                                <th>Movimiento</th>
-                                <th>Saldo Actual</th>
-                                <th>Cliente</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td className="reg1 p-2">1</td>
-                                <td className="reg2 p-2">ASD123</td>
-                                <td className="reg3 p-2">5.000</td>
-                                <td className="reg4 p-2">45.000</td>
-                                <td className="reg5 p-2">Juan Perez</td>
-                            </tr>
-                            <tr>
-                                <td className="reg1 p-2">2</td>
-                                <td className="reg2 p-2">ASD123</td>
-                                <td className="reg3 p-2">5.000</td>
-                                <td className="reg4 p-2">45.000</td>
-                                <td className="reg5 p-2">Juan Perez</td>
-                            </tr>
-                            <tr>
-                                <td className="reg1 p-2">3</td>
-                                <td className="reg2 p-2">ASD123</td>
-                                <td className="reg3 p-2">5.000</td>
-                                <td className="reg4 p-2">45.000</td>
-                                <td className="reg5 p-2">Juan Perez</td>
-                            </tr>
-                            <tr>
-                                <td className="reg1 p-2">4</td>
-                                <td className="reg2 p-2">ASD123</td>
-                                <td className="reg3 p-2">5.000</td>
-                                <td className="reg4 p-2">45.000</td>
-                                <td className="reg5 p-2">Juan Perez</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    {(loans && loans.length > 0) ? (
+                        <table className="table w-full p-4 border border-gray-300">
+                            <thead className="bg-yellow-200">
+                                <tr>
+                                    <th>No</th>
+                                    <th>Libro</th>
+                                    <th>Usuario</th>
+                                    <th>Fecha Entrega</th>
+                                    <th>Fecha Devolucion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {loans.map((loan, i) => {
+                                    return (
+                                        <tr key={i}>
+                                            <td className="reg1 p-2">{(i+1)}</td>
+                                            <td className="reg2 p-2">{loan.loan_book.title}</td>
+                                            <td className="reg3 p-2">{loan.loan_library_user.full_name}</td>
+                                            <td className="reg4 p-2">{loan.date_record?DateTime.fromISO(loan.date_record).toFormat('yyyy-MM-dd'):''}</td>
+                                            <td className="reg5 p-2">{loan.date_return?DateTime.fromISO(loan.date_return).toFormat('yyyy-MM-dd'):''}</td>
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </table>
+                    ) : (
+                        <h2>Cargando...</h2>
+                    )}
+
                 </div>
             </div>
         </div>
