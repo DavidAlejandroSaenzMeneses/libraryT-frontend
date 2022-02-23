@@ -1,5 +1,5 @@
 import React from 'react';
 
 export default function Home() {
-  return <h1 className="flex text-xl justify-start w-full">Bienvenido</h1>;
+  return <div className="bg-book-wallpaper object-fill h-4/5 w-4/5">Bienvenido</div>;
 }

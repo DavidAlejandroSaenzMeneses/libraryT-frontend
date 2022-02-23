@@ -34,6 +34,9 @@ export default function CreateLoan() {
         }
         getData();
     }, []);
+    const fileChange = (e) => {
+        setSelectedFile(e.target.files[0]);
+    }
     const updateBookData = async (e) => {
         e.preventDefault();
         if (tituloRef.current.value === '' || autorRef.current.value === '' || genreRef.current.value === '' || prologueRef.current.value === '') {
@@ -56,56 +59,52 @@ export default function CreateLoan() {
                     selectedFile.name
                 );
                 //Sube imagen y actualiza el registro para enlazarlos
-                axios.post(`${urlBase}/book/upload-image/${idBook}`, formData).then((res) => {
-                    if (res.data.articleUpdated) {
-                        navigate("/blog", { replace: true });
+                axios.post(`${urlBase}/books/upload-image/${idBook}`, formData).then((res) => {
+                    if (res.data.result.length > 0) {
+                        navigate("/books", { replace: true });
                     } else {
                         MySwal.fire('Error', 'Algo salio mal', 'error');
                     }
                 })
             } else {
-                navigate("/blog", { replace: true });
+                navigate("/books", { replace: true });
             }
             MySwal.fire('Proceso Realizado', 'El Libro fue actualizado correctamente', 'success');
         } else {
             MySwal.fire('Error', 'Algo salio mal', 'error');
         }
     }
-    const fileChange = (e) => {
-        setSelectedFile(e.target.files[0]);
-    }
-    /*const saveLoan = async (e) => {
+    const deleteBook = (e)=>{
         e.preventDefault();
-        if (tituloRef.current.value === '' || autorRef.current.value === '' || genreRef.current.value === '' || prologueRef.current.value === '') {
-            MySwal.fire('Error', 'Datos incompletos', 'error');
-            return false;
-        }
-        const formDataUser = {
-            id_library_user: (userData.user.id_library_user ? userData.user.id_library_user : null),
-            identification: `${typeUserRef.current.value}-${numberUserRef.current.value}`,
-            full_name: nameUserRef.current.value,
-            phone_number: phoneUserRef.current.value
-        };
-        try {
-            let updatedUserData = false;
-            let libraryUser = false;
-            if (userData.user.id_library_user !== false && userData.user.id_library_user !== undefined) {
-                updatedUserData = await axios.put(`${urlBase}/users/${userData.user.id_library_user}`, formDataUser);
-                libraryUser = userData.user.id_library_user;
-            } else {
-                updatedUserData = await axios.post(`${urlBase}/users`, formDataUser);
-                libraryUser = updatedUserData.data.result.id_library_user;
+        MySwal.fire({
+            title: 'Esta seguro?',
+            text: "Desea eliminar el libro permanentamente",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            confirmButtonColor: '#22c55e',
+            cancelButtonText: 'Cancelar',
+            cancelButtonColor: '#6b7280',
+            
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`${urlBase}/books/${idBook}`).then(res => {
+                    MySwal.fire(
+                        'Proceso Realizado',
+                        'El libro fue eliminado correctamente',
+                        'success'
+                    )
+                    navigate("/books", { replace: true });
+                }).catch(error => {
+                    MySwal.fire(
+                        'Error',
+                        'El libro no fue eliminado, por favor verifique que no tenga registro de prestamos',
+                        'error'
+                    )
+                });          
             }
-            if (updatedUserData !== false) {
-                const loansData = { id_library_user: libraryUser, id_book: idBook };
-                updatedUserData = await axios.post(`${urlBase}/loans`, loansData);
-            }
-            MySwal.fire('Proceso Realizado', 'Prestamo realizado correctamente', 'success');
-            navigate("/books", { replace: true });
-        } catch (error) {
-            MySwal.fire('Error', 'Algo salio mal', 'error');
-        }
-    }*/
+        });
+    }
     return (
         <div className="py-4 px-6 h-full">
             <div className="data-records block p-2 bg-white w-full rounded-md shadow-lg h-4/5 justify-center">
@@ -156,8 +155,9 @@ export default function CreateLoan() {
                                             <div className="form-group my-2 mb-4">
                                                 <textarea className="border border-gray-500 p-1 w-full rounded-md" placeholder="Prologo" ref={prologueRef} ></textarea>
                                             </div>
-                                            <div className="form-group">
-                                                <input className="border-2 border-gray-300 w-40 rounded-md bg-green-400 text-white font-bold font-xl p-2 px-4 box-content transition delay-150 hover:bg-green-500 hover:border-gray-400 duration-300" type="submit" value="GUARDAR" />
+                                            <div className="form-group grid grid-cols-2 my-2 mb-4 gap-2">
+                                                <input className="border-2 border-green-400 w-40 rounded-md text-gray-700 font-bold font-xl p-2 px-4 box-content transition delay-150 hover:bg-green-500 hover:text-white duration-300" type="submit" value="GUARDAR" />
+                                                <button className="border-2 border-red-400 w-40 rounded-md text-gray-700 font-bold font-xl p-2 px-4 box-content transition delay-150 hover:bg-red-500 hover:text-white duration-300" onClick={deleteBook}>ELIMINAR</button>
                                             </div>
                                         </form>
                                     </div>

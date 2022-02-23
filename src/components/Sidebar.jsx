@@ -7,11 +7,11 @@ import Logo from './Logo.jsx';
 
 export default function Sidebar() {
     return (
-        <aside className=" hidden sm:block h-full w-24 lg:w-1/6 sidebar container">
+        <aside className="left hidden  sm:block h-full w-1/12 sm:w-1/5 lg:w-1/6 sidebar bg-gradient-to-r from-indigo-600 to-blue-400 container">
             <div className="flex bg-white w-full h-14 items-center">
                 <Logo styleText="text-white" styleIcon="text-white" />
             </div>
-            <div className="menu flex py-6 bg-gradient-to-r w-full from-indigo-600 to-blue-400 pl-6 h-full overflow-auto">
+            <div className="menu flex py-6 w-full h-4/5 pl-6">
                 <div className="option-list block w-full my-4">
                     <ul className="block w-full">
                         <li className="item1 item-menu group">

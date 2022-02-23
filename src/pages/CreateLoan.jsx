@@ -13,9 +13,6 @@ export default function CreateLoan() {
     const typeUserRef = useRef();
     const nameUserRef = useRef();
     const phoneUserRef = useRef();
-
-
-
     const documents = ['CC', 'CE', 'TI'];
     const urlBase = "http://localhost:3900/api/v1";
     const [book, setBook] = useState({ book: false, status: '' });
