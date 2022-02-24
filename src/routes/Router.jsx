@@ -24,8 +24,8 @@ export default function Router() {
                 <div className="right h-full w-full sm:w-4/5 lg:w-5/6 text-center bg-gray-200 overflow-auto">
                     <Header />
                     <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/home" element={<Home />} />
+                        <Route path="/" element={<Books />} />
+                        <Route path="/home" element={<Books />} />
                         <Route path="/users" element={<Users />} />
                         <Route path="/users/create/" element={<CreateUser />} />
                         <Route path="/users/edit/:idUser" element={<EditUser />} />
